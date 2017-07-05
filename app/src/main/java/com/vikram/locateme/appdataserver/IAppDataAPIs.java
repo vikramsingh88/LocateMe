@@ -23,7 +23,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface IAppDataAPIs {
-
+    //https://mlocate.herokuapp.com/
     String CONTENT_TYPE = "Content-Type";
     String JSON_TYPE = "application/json";
     String BASE_URL = "http://10.50.7.188:8080/";
