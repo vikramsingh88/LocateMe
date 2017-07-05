@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "671377379782",
+    "firebase_url": "https://locateme-dd224.firebaseio.com",
+    "project_id": "locateme-dd224",
+    "storage_bucket": "locateme-dd224.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:671377379782:android:4c636d4a43f6b49f",
+        "android_client_info": {
+          "package_name": "com.vikram.locateme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "671377379782-dojn7ns81kabe70ptogkop39peeaoi7a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vikram.locateme",
+            "certificate_hash": "a96aa1b3cf816d1c6a567f24ab11fd8166496228"
+          }
+        },
+        {
+          "client_id": "671377379782-cf33ptpgv8laiqsgkluadpb7rtgfasui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0JtgqQVH21l5Gvq_tg3F9qTTP63rYO0w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "671377379782-cf33ptpgv8laiqsgkluadpb7rtgfasui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
