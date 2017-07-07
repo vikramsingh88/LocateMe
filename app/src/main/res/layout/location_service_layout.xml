@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <com.vikram.locateme.views.MyTextView
+        android:id="@+id/txt_lbl_location_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/location_service"
+        android:textColor="@color/primary_text" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox_location_service"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:button="@drawable/background_location_service"/>
+
+    <View
+        android:id="@+id/view_4"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_lbl_location_service"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/background_horizonatal_line" />
+
+
+</RelativeLayout>

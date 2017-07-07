@@ -25,4 +25,5 @@ public class Constants {
     public static final String APPROVE_INTENT = "com.vikram.locateme.approve";
     public static final String CONNECTED_INTENT = "com.vikram.locateme.connected";
     public static final String PENDING_INTENT = "com.vikram.locateme.pending";
+    public static final String PROVIDER_CHANGED = "android.location.PROVIDERS_CHANGED";
 }

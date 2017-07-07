@@ -20,13 +20,15 @@ import com.vikram.locateme.appdataserver.AppDataClient;
 import com.vikram.locateme.appdataserver.RetroResponse;
 import com.vikram.locateme.appdataserver.requestmodel.SaveLocationRequestObject;
 import com.vikram.locateme.appdataserver.requests.RequestSaveLocationData;
+import com.vikram.locateme.ui.settings.SettingPreference;
 
 public class LocationService extends Service {
     private static final String TAG = "LocationService";
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 1000*60*5;
-    private static final float LOCATION_DISTANCE = 10f;
+    private  long LOCATION_INTERVAL;
+    private static final float LOCATION_DISTANCE = 500f;
     private String authToken;
+    private SettingPreference mSettingPreference;
 
     private class LocationListener implements android.location.LocationListener {
         Location mLastLocation;
@@ -89,6 +91,8 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
+        mSettingPreference = SettingPreference.getInstance(this);
+        LOCATION_INTERVAL = mSettingPreference.getLocationInterval();
         initializeLocationManager();
         try {
             mLocationManager.requestLocationUpdates(

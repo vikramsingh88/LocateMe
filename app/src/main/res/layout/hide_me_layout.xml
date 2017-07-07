@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/checkBox_hide_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+    <com.vikram.locateme.views.MyTextView
+        android:id="@+id/txt_lbl_hide_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkBox_hide_me"
+        android:layout_alignBottom="@+id/checkBox_hide_me"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/hide_me"
+        android:textColor="@color/primary_text" />
+
+    <View
+        android:id="@+id/view_2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_lbl_hide_me"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_horizonatal_line" />
+
+</RelativeLayout>

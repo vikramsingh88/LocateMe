@@ -2,11 +2,15 @@ package com.vikram.locateme.ui.location;
 
 import android.app.Dialog;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -22,11 +26,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.vikram.locateme.R;
 import com.vikram.locateme.services.BoundLocationService;
 import com.vikram.locateme.utils.DialogHelper;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +42,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private Toolbar mToolbar;
+    private TextView mTextViewToolbarTitle;
     private Dialog mDialog;
     private String authToken;
     private String contact;
@@ -52,6 +60,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mTextViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -65,6 +74,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (authToken != null && !authToken.equals("")) {
             locationPresenter.getLocation(authToken, contact);
         }
+
+        mTextViewToolbarTitle.setText(getContactName(this, contact) +"'s Location ");
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -163,7 +174,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (Location location : locations) {
             LatLng loc = new LatLng(Double.valueOf(location.getLatlon().split(":")[0]), Double.valueOf(location.getLatlon().split(":")[1]));
             mMap.addMarker(new MarkerOptions().position(loc));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18.0f));
+            mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(loc)      // Sets the center of the map to
+                    .zoom(20)                   // Sets the zoom
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
     }
 
@@ -183,5 +202,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void locationShared(String response) {
         Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
+    }
+
+    public static String getContactName(Context context, String phoneNumber) {
+        String contactName = "Unknown";
+        if (phoneNumber != null && !phoneNumber.equals("")) {
+            ContentResolver cr = context.getContentResolver();
+            Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+            Cursor cursor = cr.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+            if (cursor == null) {
+                return contactName;
+            }
+
+            if(cursor.moveToFirst()) {
+                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            }
+
+            if(cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return contactName;
     }
 }

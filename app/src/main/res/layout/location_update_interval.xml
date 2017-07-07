@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <com.vikram.locateme.views.MyTextView
+        android:id="@+id/txt_lbl_location_update_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/location_update_interval"
+        android:textColor="@color/primary_text" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_lbl_location_update_interval"
+        android:layout_below="@+id/txt_lbl_location_update_interval"
+        android:layout_marginTop="5dp"
+        android:max="60" />
+
+    <View
+        android:id="@+id/view_1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/seekBar"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/background_horizonatal_line" />
+</RelativeLayout>

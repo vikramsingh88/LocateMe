@@ -290,7 +290,9 @@ public class MainActivity extends AppCompatActivity implements IOnConnectedUpdat
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingActivity.class));
+            Intent intentSettings = new Intent(this, SettingActivity.class);
+            intentSettings.putExtra("authToken",authToken);
+            startActivity(intentSettings);
             return true;
         }
 

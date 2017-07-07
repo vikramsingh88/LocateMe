@@ -242,6 +242,11 @@
     </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="share">share</string>
+    <string name="location_update_interval">Location update interval</string>
+    <string name="hide_me">Hide my location</string>
+    <string name="emergency_contact">In case of emergency contact</string>
+    <string name="updating_visibility">Updating visibility</string>
+    <string name="location_service">Location service</string>
 
 
 </resources>
