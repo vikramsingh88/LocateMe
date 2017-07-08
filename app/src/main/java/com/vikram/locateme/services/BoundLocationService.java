@@ -15,7 +15,7 @@ public class BoundLocationService extends Service {
 
     private static final String TAG = "BoundLocationService";
     private LocationManager mLocationManager = null;
-    private static final int LOCATION_INTERVAL = 1000;
+    private static final int LOCATION_INTERVAL = 1000*60*15;
     private static final float LOCATION_DISTANCE = 0f;
     private double mLatitude;
     private double mLongitude;

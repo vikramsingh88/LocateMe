@@ -247,6 +247,7 @@
     <string name="emergency_contact">In case of emergency contact</string>
     <string name="updating_visibility">Updating visibility</string>
     <string name="location_service">Location service</string>
-
-
+    <string name="history">history</string>
+    <string name="title_activity_history">History</string>
+    <string name="location_history">Fetching location history</string>
 </resources>

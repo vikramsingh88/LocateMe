@@ -19,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.vikram.locateme.R;
 import com.vikram.locateme.services.BoundLocationService;
+import com.vikram.locateme.ui.history.HistoryActivity;
 import com.vikram.locateme.utils.DialogHelper;
 
 import org.w3c.dom.Text;
@@ -43,6 +46,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private Toolbar mToolbar;
     private TextView mTextViewToolbarTitle;
+    private TextView mTextViewDistance;
+    private Button mButtonRefresh;
     private Dialog mDialog;
     private String authToken;
     private String contact;
@@ -61,6 +66,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         mTextViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        mTextViewDistance = (TextView) findViewById(R.id.txt_distance);
+        mButtonRefresh = (Button) findViewById(R.id.btn_refresh);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
@@ -76,6 +83,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         mTextViewToolbarTitle.setText(getContactName(this, contact) +"'s Location ");
+
+        mButtonRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String latLon = mService.getCurrentLocation();
+            }
+        });
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -150,6 +164,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locationPresenter.shareLocation(authToken, contact, latLon);
                 }
                 return true;
+            case R.id.action_history:
+                Intent intent = new Intent(this, HistoryActivity.class);
+                intent.putExtra("authToken", authToken);
+                intent.putExtra("contact", contact);
+                startActivity(intent);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -174,15 +194,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (Location location : locations) {
             LatLng loc = new LatLng(Double.valueOf(location.getLatlon().split(":")[0]), Double.valueOf(location.getLatlon().split(":")[1]));
             mMap.addMarker(new MarkerOptions().position(loc));
-            mMap.animateCamera(CameraUpdateFactory.zoomIn());
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            //mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            //mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(loc)      // Sets the center of the map to
-                    .zoom(20)                   // Sets the zoom
-                    .bearing(90)                // Sets the orientation of the camera to east
+                    .zoom(15)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to north
                     .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            //calculate distance from my location to buddy location
+            if (mService != null) {
+                String myLatLon = mService.getCurrentLocation();
+                if (myLatLon.split(":")[0].equals("0.0")) {
+                    mTextViewDistance.setText("Distance from you " + "ERROR");
+                } else if (location.getLatlon().split(":")[0].equals("0.0")) {
+                    mTextViewDistance.setText("Distance from you " + "ERROR");
+                } else {
+                    double distance = getDistanceFromTwoGioPoints(Double.valueOf(myLatLon.split(":")[0]), Double.valueOf(myLatLon.split(":")[1]),
+                            Double.valueOf(location.getLatlon().split(":")[0]), Double.valueOf(location.getLatlon().split(":")[1]));
+
+                    mTextViewDistance.setText("Distance from you " + String.format("%.2f", distance) + " KM.");
+                }
+            }
         }
     }
 
@@ -223,5 +258,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
         return contactName;
+    }
+
+    private double getDistanceFromTwoGioPoints(double myLat, double myLong, double buddyLat, double buddyLon) {
+        android.location.Location locationA = new android.location.Location("point A");
+
+        locationA.setLatitude(myLat);
+        locationA.setLongitude(myLong);
+
+        android.location.Location locationB = new android.location.Location("point B");
+
+        locationB.setLatitude(buddyLat);
+        locationB.setLongitude(buddyLon);
+
+        float distance = locationA.distanceTo(locationB);
+        return distance/1000.0f;
     }
 }

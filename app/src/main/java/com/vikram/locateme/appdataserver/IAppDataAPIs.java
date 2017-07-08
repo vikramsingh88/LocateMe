@@ -12,6 +12,8 @@ import com.vikram.locateme.appdataserver.requestmodel.PendingRequestObject;
 import com.vikram.locateme.appdataserver.requestmodel.RegistrationRequestObject;
 import com.vikram.locateme.appdataserver.requestmodel.SaveLocationRequestObject;
 import com.vikram.locateme.appdataserver.requestmodel.ShareLocationRequestObject;
+import com.vikram.locateme.ui.history.LocationHistory;
+import com.vikram.locateme.ui.history.LocationHistoryResponse;
 import com.vikram.locateme.ui.location.LocationResponse;
 import com.vikram.locateme.ui.login.LoginResponse;
 import com.vikram.locateme.ui.main.approve.ApproveResponse;
@@ -27,7 +29,7 @@ public interface IAppDataAPIs {
     //https://mlocate.herokuapp.com/
     String CONTENT_TYPE = "Content-Type";
     String JSON_TYPE = "application/json";
-    String BASE_URL = "http://192.168.43.153:8080/"; //"https://mlocate.herokuapp.com/"; //
+    String BASE_URL = "https://mlocate.herokuapp.com/"; // "http://192.168.43.153:8080/";
 
     @POST("checkIfUserExist")
     Call<RetroResponse> checkIfUserExist(@Body CheckUserRequestObject body);
@@ -66,4 +68,7 @@ public interface IAppDataAPIs {
 
     @POST("hidelocation")
     Call<RetroResponse> requestHideLocation(@Body LocationVisibilityRequestObject body);
+
+    @POST("getlocations")
+    Call<LocationHistoryResponse> requestLocationHistory(@Body GetLocationRequestObject body);
 }

@@ -5,15 +5,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.vikram.locateme.ui.location.MapsActivity"
     tools:showIn="@layout/activity_maps">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.vikram.locateme.ui.location.MapsActivity" />
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.vikram.locateme.ui.location.MapsActivity" />
+
+        <com.vikram.locateme.views.MyTextView
+            android:id="@+id/txt_distance"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="5dp"
+            android:text="Distance from you "
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@color/icons"
+            android:textColor="@color/primary_text"/>
+
+        <Button
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:id="@+id/btn_refresh"
+            android:background="@drawable/ic_action_refresh"
+            android:layout_centerHorizontal="true"
+            android:layout_alignTop="@+id/txt_distance"
+            android:layout_alignRight="@+id/txt_distance"
+            android:layout_alignEnd="@+id/txt_distance" />
+
+    </RelativeLayout>
+
 </android.support.v4.widget.NestedScrollView>

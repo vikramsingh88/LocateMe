@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.vikram.locateme.ui.location.MapsActivity">
+    tools:context="com.vikram.locateme.ui.history.HistoryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -24,11 +24,10 @@
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/budy_location" />
+                android:text="@string/history" />
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_location" />
+    <include layout="@layout/content_history" />
 
 </android.support.design.widget.CoordinatorLayout>

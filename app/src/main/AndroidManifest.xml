@@ -89,7 +89,12 @@
         <service
             android:name=".services.BoundLocationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.history.HistoryActivity"
+            android:label="@string/title_activity_history"
+            android:parentActivityName=".ui.location.MapsActivity"/>
     </application>
 
 </manifest>
