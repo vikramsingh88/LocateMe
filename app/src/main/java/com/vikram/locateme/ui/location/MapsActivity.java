@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
@@ -170,6 +171,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent.putExtra("contact", contact);
                 startActivity(intent);
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -191,7 +195,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void receivedLocation(List<Location> locations) {
-        for (Location location : locations) {
+        for (final Location location : locations) {
             LatLng loc = new LatLng(Double.valueOf(location.getLatlon().split(":")[0]), Double.valueOf(location.getLatlon().split(":")[1]));
             mMap.addMarker(new MarkerOptions().position(loc));
             //mMap.animateCamera(CameraUpdateFactory.zoomIn());
@@ -204,19 +208,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .build();                   // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-            //calculate distance from my location to buddy location
-            if (mService != null) {
-                String myLatLon = mService.getCurrentLocation();
-                if (myLatLon.split(":")[0].equals("0.0")) {
-                    mTextViewDistance.setText("Distance from you " + "ERROR");
-                } else if (location.getLatlon().split(":")[0].equals("0.0")) {
-                    mTextViewDistance.setText("Distance from you " + "ERROR");
-                } else {
-                    double distance = getDistanceFromTwoGioPoints(Double.valueOf(myLatLon.split(":")[0]), Double.valueOf(myLatLon.split(":")[1]),
-                            Double.valueOf(location.getLatlon().split(":")[0]), Double.valueOf(location.getLatlon().split(":")[1]));
-
-                    mTextViewDistance.setText("Distance from you " + String.format("%.2f", distance) + " KM.");
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //calculate distance from my location to buddy location
+                    calculateDistanceFromMe(location);
                 }
+            }, 5000);
+        }
+    }
+
+    private void calculateDistanceFromMe(Location location) {
+        //calculate distance from my location to buddy location
+        if (mService != null) {
+            String myLatLon = mService.getCurrentLocation();
+            if (myLatLon.split(":")[0].equals("0.0")) {
+                mTextViewDistance.setText("Distance from you " + "ERROR");
+            } else if (location.getLatlon().split(":")[0].equals("0.0")) {
+                mTextViewDistance.setText("Distance from you " + "ERROR");
+            } else {
+                double distance = getDistanceFromTwoGioPoints(Double.valueOf(myLatLon.split(":")[0]), Double.valueOf(myLatLon.split(":")[1]),
+                        Double.valueOf(location.getLatlon().split(":")[0]), Double.valueOf(location.getLatlon().split(":")[1]));
+
+                mTextViewDistance.setText("Distance from you " + String.format("%.2f", distance) + " KM.");
             }
         }
     }

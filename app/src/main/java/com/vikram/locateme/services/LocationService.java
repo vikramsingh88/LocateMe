@@ -93,6 +93,7 @@ public class LocationService extends Service {
         Log.e(TAG, "onCreate");
         mSettingPreference = SettingPreference.getInstance(this);
         LOCATION_INTERVAL = mSettingPreference.getLocationInterval();
+        LOCATION_INTERVAL = LOCATION_INTERVAL*1000*60;
         initializeLocationManager();
         try {
             mLocationManager.requestLocationUpdates(

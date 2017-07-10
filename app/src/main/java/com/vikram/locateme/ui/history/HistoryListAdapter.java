@@ -82,7 +82,8 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     public void onBindViewHolder(final HistoryListAdapter.ViewHolder holder, final int position) {
         holder.textName.setText(listLocationHistory.get(position).getUserName());
         holder.txtContact.setText(listLocationHistory.get(position).getContact());
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        dateFormat.setTimeZone(TimeZone.getDefault());
         try {
             Date result1 = dateFormat.parse(listLocationHistory.get(position).getTimeStamp());
             holder.txtTimeStamp.setText(result1.toString());

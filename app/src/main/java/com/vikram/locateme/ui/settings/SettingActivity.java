@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
@@ -19,9 +20,14 @@ import com.vikram.locateme.R;
 import com.vikram.locateme.services.LocationService;
 import com.vikram.locateme.utils.Constants;
 import com.vikram.locateme.utils.DialogHelper;
+import com.vikram.locateme.utils.JWTDecoder;
+
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class SettingActivity extends AppCompatActivity implements ISettingsView {
     private Toolbar mToolbar;
+    private TextView mTextViewToolbarTitle;
     private SeekBar mSeekBar;
     private TextView mTextViewInterval;
     private CheckBox mCheckBoxVisibility;
@@ -32,6 +38,7 @@ public class SettingActivity extends AppCompatActivity implements ISettingsView 
     private ISettingsPresenter settingsPresenter;
     private LocationManager mLocationManager;
     private BroadcastReceiver receiver;
+    private static final int MILLISECOND = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class SettingActivity extends AppCompatActivity implements ISettingsView 
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mTextViewToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
 
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE );
 
@@ -68,6 +77,16 @@ public class SettingActivity extends AppCompatActivity implements ISettingsView 
 
         Intent intent = getIntent();
         authToken = intent.getStringExtra("authToken");
+
+        //Decode JWT
+        try {
+            String json = JWTDecoder.decodedJWT(authToken);
+            JSONObject jsonObject = new JSONObject(json);
+            JSONObject docJson = jsonObject.getJSONObject("_doc");
+            mTextViewToolbarTitle.setText(docJson.getString("userName")+"'s "+getString(R.string.settings));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mSettingPreference = SettingPreference.getInstance(this);
 
@@ -184,5 +203,14 @@ public class SettingActivity extends AppCompatActivity implements ISettingsView 
         } else {
             return "open";
         }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

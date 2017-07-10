@@ -19,7 +19,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/txt_lbl_emergency_contact"
-        android:text="Vikram"
+        android:text="---"
         android:textColor="@color/primary_text" />
 
     <CheckBox
